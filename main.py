@@ -1,6 +1,8 @@
-import random as random
+from random import choice
 
 colorList = ["#FF5733", "#3342FF", "#FCFF33"]
 
-print(random.choice(colorList))
+print(choice(colorList))
+
+
 

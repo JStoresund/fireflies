@@ -1,4 +1,3 @@
-
 % rebase('base.tpl', title="Farge")
 
 {{'''Liste med RGB-verdier'''}}
@@ -6,5 +5,5 @@
 % colourList = ["red", "blue", "green"]
 % randColour = random.choice(colourList)
 
-<body style=background-color: {{randColour}} ;>
+<body style=background-color: {{randColour}};>
 
