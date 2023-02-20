@@ -1,7 +1,5 @@
 from bottle import route, run, template, static_file
 import random
-from bottle_websocket import GeventWebSocketServer
-from bottle_websocket import websocket
 
 #HUSK!
 # % for for-loops of if-statements. Tekst inni {{}} anses som pythonkode
@@ -10,6 +8,14 @@ from bottle_websocket import websocket
 @route('/')
 def home():
     return template('hjem')
+
+@route("/style.css")
+def style():
+    return template("style.css")
+
+@route("/logo.jpg")
+def logo():
+    return template("MGPlogo.jpg")
 
 #Fargeskjerm. Her må man sendes etter å ha fylt ut info på hjemskjermen 
 @route('/farge')
