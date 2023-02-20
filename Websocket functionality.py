@@ -1,5 +1,4 @@
 from bottle import route, run, template, static_file
-import random
 
 #HUSK!
 # % for for-loops of if-statements. Tekst inni {{}} anses som pythonkode
@@ -13,10 +12,6 @@ def home():
 def style():
     return template("style.css")
 
-@route("/logo.jpg")
-def logo():
-    return template("MGPlogo.jpg")
-
 #Fargeskjerm. Her må man sendes etter å ha fylt ut info på hjemskjermen 
 @route('/farge')
 def colour():
@@ -27,5 +22,5 @@ def colour():
 def static(filename):
     return static_file(filename, root='./views/static') 
 
-run(debug=True, reloader=True, host="0.0.0.0", port=80)
+run(debug=True, reloader=True)
 
