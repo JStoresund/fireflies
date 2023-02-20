@@ -6,7 +6,6 @@ body{
 input {
     padding: 5px;
     border-radius: 5%;
-    margin: -10%;
 }
 
 button {
@@ -19,6 +18,5 @@ button {
 }
 button:active {
     background-color: rgb(221, 225, 9);
-    /* border-color: orange; */
     width: 9.8%;
 }

@@ -3,8 +3,8 @@
 <font size = "5">
 <h1>Hei og velkommen til MGP sitt digitale lysshow!</h1>
    
-<p>Vennligst skriv inn felt, rad og sete, det står på setet ditt.</p>
-        
+<p>Vennligst skriv inn felt, rad og sete. Det står på setet ditt.</p>
+
 <h5> Felt: </h5>
 <input> 
 <h5> Rad: </h5>
