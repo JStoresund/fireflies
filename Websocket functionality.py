@@ -1,4 +1,7 @@
-from bottle import route, run, template, static_file
+from bottle import route, run, template, static_file, get
+from bottle_websocket import GeventWebSocketServer
+from bottle_websocket import websocket
+
 
 #HUSK!
 # % for for-loops of if-statements. Tekst inni {{}} anses som pythonkode
@@ -6,7 +9,7 @@ from bottle import route, run, template, static_file
 #Hjemskjerm. Her kommer info bruker må fylle ut for å kartlegge mobile enheter. Dvs. felt, rad og setenummer
 @route('/')
 def home():
-    return template('hjem')
+    return template('hjem.tpl')
 
 @route("/style.css")
 def style():
@@ -22,5 +25,17 @@ def colour():
 def static(filename):
     return static_file(filename, root='./views/static') 
 
-run(debug=True, reloader=True)
+@route("/index")
+def index():
+    return template("index")
+
+@get('/websocket', apply=[websocket])
+def echo(ws):
+    while True:
+        msg = ws.receive()
+        if msg is not None:
+            ws.send(msg)
+        else: break
+
+run(host='127.0.0.1', reloader=True, port=8000, server=GeventWebSocketServer)
 

@@ -6,13 +6,13 @@
 <p>Vennligst skriv inn felt, rad og sete. Det står på setet ditt.</p>
 
 <h5> Felt: </h5>
-<input> 
+<input id="felt"> 
 <h5> Rad: </h5>
-<input>
+<input id="rad">
 <h5> Sete: </h5>
-<input>
+<input id="sete">
 <br>
 
-<button type="button">Send!</button>
+<button>Send!</button>
 
 <img src="/logo.jpg" alt="">
