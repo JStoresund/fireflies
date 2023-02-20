@@ -15,4 +15,4 @@
 
 <button type="button">Send!</button>
 
-<img src="MGPlogo.jpg" alt="">
+<img src="/logo.jpg" alt="">

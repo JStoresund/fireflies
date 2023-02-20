@@ -27,5 +27,5 @@ def colour():
 def static(filename):
     return static_file(filename, root='./views/static') 
 
-run(debug=True, reloader=True)
+run(debug=True, reloader=True, host="0.0.0.0", port=80)
 
