@@ -2,6 +2,7 @@
 # from bottle_websocket import GeventWebSocketServer, websocket
 from flask import Flask, render_template
 from flask_socketio import SocketIO
+import random
 
 async_mode=None
 app=Flask(__name__)
@@ -20,7 +21,9 @@ def style():
 #Fargeskjerm. Her må man sendes etter å ha fylt ut info på hjemskjermen 
 @app.route('/farge')
 def colour():
-    return render_template('colour.tpl', sync_mode=Socket.async_mode)
+    colors=["red", "blue", "green", "yellow", "orange", "purple", "pink", "black"]
+    randColor=random.choice(colors)
+    return render_template('colour.tpl', randColor=randColor, sync_mode=Socket.async_mode)
 
 #Route for å implementere statiske filer til hjemskjerm. Dvs. MGP-bilde
 # @app.route('/static/<filename>', sync_mode=Socket.async_mode)
