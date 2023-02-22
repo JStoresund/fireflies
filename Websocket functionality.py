@@ -1,34 +1,37 @@
-from bottle import route, run, template, static_file, get
-from bottle_websocket import GeventWebSocketServer, websocket
+# from bottle import route, run, template, static_file, get
+# from bottle_websocket import GeventWebSocketServer, websocket
+from flask import Flask, render_template
+from flask_socketio import SocketIO
+
+async_mode=None
+app=Flask(__name__)
+
+Socket = SocketIO(app, async_mode=async_mode)
 
 
-#HUSK!
-# % for for-loops of if-statements. Tekst inni {{}} anses som pythonkode
-
-#Hjemskjerm. Her kommer info bruker må fylle ut for å kartlegge mobile enheter. Dvs. felt, rad og setenummer
-@route('/')
+@app.route('/')
 def home():
-    return template('hjem.tpl')
+    return render_template('hjem.tpl', sync_mode=Socket.async_mode)
 
-@route("/style.css")
+@app.route("/style.css")
 def style():
-    return template("style.css")
+    return render_template("style.css", sync_mode=Socket.async_mode)
 
 #Fargeskjerm. Her må man sendes etter å ha fylt ut info på hjemskjermen 
-@route('/farge')
+@app.route('/farge')
 def colour():
-    return template('colour')
+    return render_template('colour.tpl', sync_mode=Socket.async_mode)
 
 #Route for å implementere statiske filer til hjemskjerm. Dvs. MGP-bilde
-@route('/static/<filename>')
-def static(filename):
-    return static_file(filename, root='./views/static') 
+# @app.route('/static/<filename>', sync_mode=Socket.async_mode)
+# def static(filename):
+#     return static_file(filename, root='./views/static') 
 
-@route("/index")
+@app.route("/index")
 def index():
-    return template("index")
+    return render_template("index", sync_mode=Socket.async_mode)
 
-# @get('/websocket', apply=[websocket])
+# @app.get('/websocket', apply=[websocket])
 # def echo(ws):
 #     while True:
 #         msg = ws.receive()
@@ -38,5 +41,8 @@ def index():
 #             print("WebSocket lukket")
 #             break
 
-run(host='127.0.0.1', reloader=True, port=8000, server=GeventWebSocketServer)
+# run(host='127.0.0.1', reloader=True, port=8000, server=GeventWebSocketServer)
+
+if __name__ == "__main__":
+    Socket.run(app, host="localhost", debug=True, use_reloader=True, port=8000)
 
