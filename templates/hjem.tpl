@@ -18,7 +18,8 @@
         <br>
 
         <button>Send!</button>
+        <br>
 
-        <img src="/logo.jpg" alt="">
+        <!-- <img src="static/images/MGPlogo.jpg" /> -->
     </body>
 </html>
