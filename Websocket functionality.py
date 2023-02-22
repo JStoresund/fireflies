@@ -1,6 +1,5 @@
 from bottle import route, run, template, static_file, get
-from bottle_websocket import GeventWebSocketServer
-from bottle_websocket import websocket
+from bottle_websocket import GeventWebSocketServer, websocket
 
 
 #HUSK!
@@ -29,13 +28,15 @@ def static(filename):
 def index():
     return template("index")
 
-@get('/websocket', apply=[websocket])
-def echo(ws):
-    while True:
-        msg = ws.receive()
-        if msg is not None:
-            ws.send(msg)
-        else: break
+# @get('/websocket', apply=[websocket])
+# def echo(ws):
+#     while True:
+#         msg = ws.receive()
+#         if msg is not None:
+#             ws.send(msg)
+#         else: 
+#             print("WebSocket lukket")
+#             break
 
 run(host='127.0.0.1', reloader=True, port=8000, server=GeventWebSocketServer)
 
