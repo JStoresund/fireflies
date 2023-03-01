@@ -5,8 +5,6 @@ from random import choice
 # from time import sleep
 
 
-# listen_server=stupidArtnet.StupidArtnetServer()
-
 # def received_data(data):
 #     print("Received data: \n", data)
 
@@ -32,9 +30,6 @@ from random import choice
 #     # sleep(0.5)
 
 # del listen_server
-
-
-
 
 
 
