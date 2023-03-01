@@ -8,6 +8,10 @@ input {
     border-radius: 5%;
 }
 
+#ErrorMessage {
+    color: orange;
+}
+
 button {
     background-color: yellow;
     border-color: orange;

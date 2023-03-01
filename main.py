@@ -1,45 +1,35 @@
 from flask import Flask, send_from_directory, send_file
 from flask_socketio import SocketIO, emit
 from random import choice
-import stupidArtnet
-from time import sleep
+# import stupidArtnet
+# from time import sleep
 
 
+# def received_data(data):
+#     print("Received data: \n", data)
 
+# u0_listener=listen_server.register_listener(universe=0, callback_function=received_data)
 
-LocalIp = "1.0.0.255"
-Target_Universe = 0
+# # print(listen_server)
+# buffer=listen_server.get_buffer(u0_listener)
 
-listen_server=stupidArtnet.StupidArtnetServer()
+# for _ in range(50):
 
-def received_data(data):
-    print("Received data: \n", data)
+#     n_data = len(buffer)
+#     if n_data > 0:
+#         # in which channel 1 would be
+#         print('Channel 1: ', buffer[0])
 
-u0_listener=listen_server.register_listener(universe=0, callback_function=received_data)
+#         # and channel 20 would be
+#         print('Channel 20: ', buffer[19])
+#         print(buffer)
 
-print(listen_server)
+#     else:
+#         print("Didn't find anything")
+#         print(buffer)
+#     # sleep(0.5)
 
-sleep(3)
-
-buffer=listen_server.get_buffer(u0_listener)
-
-n_data = len(buffer)
-if n_data > 0:
-    # in which channel 1 would be
-    print('Channel 1: ', buffer[0])
-
-    # and channel 20 would be
-    print('Channel 20: ', buffer[19])
-    print(buffer)
-
-else:
-    print("Didn't find anything")
-    print(buffer)
-
-del listen_server
-
-
-
+# del listen_server
 
 
 
