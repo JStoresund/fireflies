@@ -1,32 +1,34 @@
 # Cloud setup guide
-Dette er en guide som beskriver hvordan man kan sette opp en conteiner i azure med `docker` og `az client`. Det som man må gjøre i azure kan også gjøres gjennom det grafiske grensenittet i portal.azure.com, men det er mye kjappere å gjøre det gjennom terminalen. 
+Dette er en guide som beskriver hvordan man kan sette opp en conteiner i Azure med `docker` og `az client`. Man kan oppnå akkuratt det sammen gjennom det grafiske grensenittet i portal.azure.com, men det er mye kjappere å gjøre det gjennom terminalen. 
 
 **NB: Denne guiden viser ikke "best practice", men viser en enkel måte å sette en konteiner kjapt opp i skyen.**
 
 ## Du trenger
 * docker desktop
-* az client
-* en konto i azure. 
+* az client (det finnes en annet klient spesifik for Powershell, men az client funker fint)
+* en konto i Azure. 
 * en konto i dockerhub. https://hub.docker.com/
 
 ## Fremgangsmåte for å sette opp
 ### Dockerhub
 logg inn i dockerhub og lag et nytt public repository. Gi repoet et navn. I denne guiden heter den `johan`
 
-> Docker og dockerhub vedlig kort forklart:
-> Docker er er måte å lage/kjøre programmer som kjører i et isolert miljø. I denne sammenhenen ønsker vi å lage en webserver som oppfører seg likt på en utvikler pc og i skyen. Docker er perfekt for det, og lar oss definere hvordan koden vår skal kjøre og i hvilket miljø. ref: `Dockerfile`. For å kjøre det webserveren vår med docker må vi lage et image av koden vår. Dette gjøres ved at docker ser på Dockerfile filen og bygger det imaget vårt utifra hva vi har sagt. Når vi har bygget et docker image har vi det lokalt på vår egen pc, men siden vi ønsker å kjøre serveren i skyen må vi publisere imaget vårt i et container-registry. Nå bruker vi DockerHub siden det er lett å gjøre images offentlig tillgjenglig (slik at vi slipper å autentisere senere, når vi skal laste det ned igjen).
+
+> **Docker og dockerhub vedlig kort forklart**:
+>
+> Docker og dockerhub vedlig kort forklart: Docker er måte å lage/kjøre programmer i et isolert miljø. I dette prosjektet ønsker vi å lage en webserver som oppfører seg likt på vår engen datamaskin og i skyen. Docker er perfekt for det, og lar oss definere hvordan koden vår skal kjøre. ref: `Dockerfile`. Docker ser på Dockerfile filen og bygger det imaget vårt ut ifra hva vi har sagt. Når vi har bygget et docker image har vi det bare lokalt på vår egen pc, men siden vi ønsker å kjøre serveren i skyen må vi publisere imaget vårt i et container-registry. Nå bruker vi DockerHub siden det er lett å gjøre images offentlig tilgjengelig (slik at vi slipper å autentisere senere, når vi skal laste det ned igjen). 
 
 
-Første steg når koden er klar og man skal publisere den i skyen er å bygge et image. Da bruker man docker commandoen `docker build`. For å forenkle prossessen senere kan vi bruke vår eget docker hub brukernavn og repo navn. I tillegg må man ha en tag, bruk "latest". Ikke glem punktum på slutten. Punktumet beskriver hvor docker skal bygge et image fra (jeg antar at dere er i prosjektet sit directory).
-
+Første steg når koden er klar og man ønsker å kjøre den i skyen er å bygge et docker-image. Da bruker man docker kommandoen `docker build`. For å forenkle prossessen senere kan vi bruke vår eget docker hub brukernavn og repo navn. I tillegg må man ha en tag, bruk "latest". Ikke glem punktum på slutten. Punktumet beskriver hvor docker skal bygge et image fra (jeg antar at dere er i prosjektet sit directory).
 ```sh
 docker build -t <brukernavn>/<reponame>:<tag> .
 ```
-Min brukerkonto heter martinstudent2 og repoet mitt heter johan. Da vil det set sånn ut.
 
+Eksempel: Min brukerkonto heter martinstudent2 og repoet mitt heter johan. Da vil det set sånn ut.
 ```sh
 docker build -t martinstudent2/johan:latest .
 ```
+
 Nå har du bygget bildet lokalt og kan testkjøre det før vi dytter det til dockerhub. Du kan spinne opp en conteiner av imaget sånn her.
 Når det kjører gå til http://localhost:8000/ og sjekk om alt er ok.
 ```sh
@@ -85,7 +87,7 @@ http://"dns-name-lable".northeurope.azurecontainer.io:8000/
 🌟 Bra jobba! Nå kan du skrive "Experience with building and deploying docker container with Azure Clound infrastrcuture and Docker Hub" på CV-en.
 <br></br>
 
-## SHIT vi gjorde noe feil i azure!
+## SHIT vi gjorde noe feil i Azure!
 Ikke noe problem. da kan man slette ressursgruppen sin og starte på nytt.
 ```
 az group delete --name johan
@@ -93,4 +95,13 @@ az group delete --name johan
 
 ## Mulig videre arbeid:
 1. Hvordan skal man oppdatere containeren i skyen når konden endrer seg? (Tips. CICD og/eller webhooks)
-2. Ikke bruke docker hub registry, heller opprette en egen container registry i azure.
+2. Ikke bruke docker hub registry, heller opprette en egen container registry i Azure.
+
+
+## Endret koden?
+Endret koden? Har du testet den lokalt og ønkser å kjøre den oppdaterte koden i skyen. Her et et forslag.
+
+1. Bygg docker image på nytt.
+2. Test at den fungerer lokalt.
+3. Push image til Docker Hub
+4. Oppdater conteineren i Azure med å kjøre samme create commando som dere deploya den med.
