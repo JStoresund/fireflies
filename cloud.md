@@ -93,9 +93,6 @@ Ikke noe problem. da kan man slette ressursgruppen sin og starte på nytt.
 az group delete --name johan
 ```
 
-## Mulig videre arbeid:
-1. Hvordan skal man oppdatere containeren i skyen når konden endrer seg? (Tips. CICD og/eller webhooks)
-2. Ikke bruke docker hub registry, heller opprette en egen container registry i Azure.
 
 
 ## Endret koden?
@@ -105,3 +102,9 @@ Endret koden? Har du testet den lokalt og ønkser å kjøre den oppdaterte koden
 2. Test at den fungerer lokalt.
 3. Push image til Docker Hub
 4. Oppdater conteineren i Azure med å kjøre samme create commando som dere deploya den med.
+
+
+## Ekstra CV materiale
+1. Sett opp automatisk bygging av bildet med Github CI/CD. Automatisk publiser et nytt docker image til dockerhub når noen publiserer kode i "main" branchen. Azure skal bruke en webhook for å redeploye konteineren når et nytt bilde blir publisert i Docker Hub. Hvis dere klarer dette kan dere skrive følgende på CV-en. "Experience with automatic deplyoment using CI/CD"
+
+2. Ikke bruke docker hub registry, heller opprette en egen container registry i Azure.
