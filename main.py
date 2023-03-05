@@ -66,4 +66,4 @@ def handle_message(data):
     emit("update:color", choice(colors), broadcast=True)
 
 if __name__ == "__main__":
-    socketio.run(app, host="localhost", debug=True, use_reloader=True, port=8000)
+    socketio.run(app, host="0.0.0.0", debug=True, use_reloader=True, port=8000, allow_unsafe_werkzeug=True)
