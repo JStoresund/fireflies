@@ -5,9 +5,6 @@ import multiprocessing
 import stupidArtnet
 from time import sleep
 
-
-
-
 app=Flask(__name__)
 
 socketio = SocketIO(app)
@@ -49,7 +46,8 @@ def motta_info_fra_Per():
     buffer=listen_server.get_buffer(u0_listener)
 
     while True:
-        print(buffer)
+        # print(buffer)
+        
         sleep(0.5)
 
     del listen_server
