@@ -8,6 +8,7 @@ Dette er en guide som beskriver hvordan man kan sette opp en conteiner i Azure m
 * az client (det finnes en annet klient spesifik for Powershell, men az client funker fint)
 * en konto i Azure. 
 * en konto i dockerhub. https://hub.docker.com/
+* git skills 😎
 
 ## Fremgangsmåte for å sette opp
 ### Dockerhub
