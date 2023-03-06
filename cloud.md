@@ -20,6 +20,12 @@ logg inn i dockerhub og lag et nytt public repository. Gi repoet et navn. I denn
 
 
 Første steg når koden er klar og man ønsker å kjøre den i skyen er å bygge et docker-image. Da bruker man docker kommandoen `docker build`. For å forenkle prossessen senere kan vi bruke vår eget docker hub brukernavn og repo navn. I tillegg må man ha en tag, bruk "latest". Ikke glem punktum på slutten. Punktumet beskriver hvor docker skal bygge et image fra (jeg antar at dere er i prosjektet sit directory).
+
+Ekstra 1: Klon ned repoet og bytt til denne branchen.
+
+Ekstra 2: for å kjøre docker build (på denne måten), må man bruke terminalen til å kjøre kommandoer. Bruk terminalen til å navigere deg til github repoet.
+`cd path/til/prosjekt`. Bruk kommandoen `pwd` for å sikre deg at du er på riktig sted. Du vil få noe sånt ut `path/til/prosjekt/Webserver`. Et annet alternativ når man bruker VSCode er å trykke på "terminal" -> "new terminal" i øverste menyen. Da kommer du i riktig kontekst og kan kjøre docker build som vist under.
+
 ```sh
 docker build -t <brukernavn>/<reponame>:<tag> .
 ```
