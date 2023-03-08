@@ -1,52 +1,18 @@
-from flask import Flask, send_from_directory, send_file
+from flask import Flask, send_from_directory, send_file, request
 from flask_socketio import SocketIO, emit
-from random import choice
-# import stupidArtnet
-# from time import sleep
-
-
-# def received_data(data):
-#     print("Received data: \n", data)
-
-# u0_listener=listen_server.register_listener(universe=0, callback_function=received_data)
-
-# # print(listen_server)
-# buffer=listen_server.get_buffer(u0_listener)
-
-# for _ in range(50):
-
-#     n_data = len(buffer)
-#     if n_data > 0:
-#         # in which channel 1 would be
-#         print('Channel 1: ', buffer[0])
-
-#         # and channel 20 would be
-#         print('Channel 20: ', buffer[19])
-#         print(buffer)
-
-#     else:
-#         print("Didn't find anything")
-#         print(buffer)
-#     # sleep(0.5)
-
-# del listen_server
-
-
-
-
-
+import random
+import stupidArtnet
+from time import sleep
 
 app=Flask(__name__)
 
 socketio = SocketIO(app)
 
 colors=["#FD5B78", "#50BFE6", "#FFCC33", "#FF9933", "#EE34D2", "#66FF66", "#FF6EFF"]
+for i in range(len(colors)):
+    colors[i]=colors[i].lower()
 
-# # Koble opp mot artnet-input
-
-# artnet_input=[0b1011, 0b0101, 0b0001] # ...
-
-# # End
+connectedUsers = {} # Skal mappe socketID-er med setenummer, radnummer og felt
 
 @app.route('/farge')
 def farge():
@@ -61,9 +27,36 @@ def home():
 def getStataticFile(path):
     return send_from_directory("static", path) 
 
-@socketio.on('update:color')
+def receiveData(): # Funksjon som skal motta data fra raspberry. Returnerer en farge
+    buffer=listen_server.get_buffer(u0_listener)
+    if len(buffer)==0:
+        # Får ikke signal fra pi => tilfeldig farge
+        farge=random.choice(colors)
+        # print("Sending random color")
+    else:
+        # Får signal fra pi => farge fra lysbord (for øyeblikket satt til svart)
+        farge = "#" + str(hex(buffer[0]))[2:] + str(hex(buffer[1]))[2:] + str(hex(buffer[2]))[2:]
+        # print("Sending signal from pi")
+    return farge
+
+
+@socketio.on('update:color') # Funksjon som kalles når signal kommer fra klient (se websocket.html)
 def handle_message(data):
-    emit("update:color", choice(colors), broadcast=True)
+    emit("update:color", receiveData(), broadcast=True)
+
+@socketio.on("connect") # Funksjon som kalles når en ny bruker kobler seg på websocket
+def add_user(felt):
+    print("A user connected to the websocket-server")
+    # connectedUsers[request.sid] = [] # Fyll opp med radnummer, setenummer, felt
+    
 
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", debug=True, use_reloader=True, port=8000, allow_unsafe_werkzeug=True)
+
+
+    listen_server=stupidArtnet.StupidArtnetServer()
+    u0_listener=listen_server.register_listener(universe=1)
+
+    socketio.run(app, host="localhost", debug=True, use_reloader=True, port=8000)
+
+    del listen_server
+
