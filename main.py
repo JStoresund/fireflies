@@ -51,9 +51,12 @@ def add_user(felt):
     
 
 if __name__ == "__main__":
+
+
     listen_server=stupidArtnet.StupidArtnetServer()
     u0_listener=listen_server.register_listener(universe=1)
 
     socketio.run(app, host="localhost", debug=True, use_reloader=True, port=8000)
 
     del listen_server
+
