@@ -30,9 +30,24 @@ def home():
 def getStataticFile(path):
     return send_from_directory("static", path) 
 
+def receiveData():
+    # listen_server=stupidArtnet.StupidArtnetServer()
+
+    # u0_listener=listen_server.register_listener(universe=1, callback_function=received_data)
+
+    # buffer=listen_server.get_buffer(u0_listener)
+    # print("Mottar signal")
+
+    # if len(buffer)!=0:
+    #     return "#" + str(hex(buffer[0])) + str(hex(buffer[1])) + str(hex(buffer[2]))
+    return choice(colors)
+
 @socketio.on('update:color')
 def handle_message(data):
-    emit("update:color", choice(colors), broadcast=True)
+    emit("update:color", receiveData(), broadcast=True)
+
+
+
 
 def received_data(data):
     print("Received data: \n", data)
@@ -45,10 +60,13 @@ def motta_info_fra_Per():
     # print(listen_server)
     buffer=listen_server.get_buffer(u0_listener)
 
-    while True:
+    # while True:
         # print(buffer)
-        
-        sleep(0.5)
+        # Sette sammen RGB-verdi
+
+
+
+        # sleep(0.5)
 
     del listen_server
 
@@ -56,8 +74,9 @@ def run_server():
     socketio.run(app, host="localhost", debug=True, use_reloader=True, port=8000)
 
 if __name__ == "__main__":
-    p1=multiprocessing.Process(target=run_server)
-    p2=multiprocessing.Process(target=motta_info_fra_Per)
+    # p1=multiprocessing.Process(target=run_server)
+    # p2=multiprocessing.Process(target=motta_info_fra_Per)
 
-    p1.start()
-    p2.start()
+    # p1.start()
+    # p2.start()
+    run_server()
