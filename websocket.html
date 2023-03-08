@@ -11,6 +11,10 @@
     let body = document.querySelector('body');
 
     const socket = io();
+
+    var felt=localStorage.getItem("felt");
+    var radNummer=localStorage.getItem("radNummer");
+    var seteNummer=localStorage.getItem("seteNummer");
     
     socket.on('connect', () => {
       console.log('Connected to server');
@@ -25,10 +29,6 @@
     socket.on('disconnect', () => {
       console.log('Disconnected from server');
     });
-
-    var felt=localStorage.getItem("felt");
-    var radNummer=localStorage.getItem("radNummer");
-    var seteNummer=localStorage.getItem("seteNummer");
 
     setInterval(() => {
         let color = document.querySelector('#color').value;
