@@ -8,9 +8,10 @@ app=Flask(__name__)
 
 socketio = SocketIO(app)
 
-colors=["#FD5B78", "#50BFE6", "#FFCC33", "#FF9933", "#EE34D2", "#66FF66", "#FF6EFF"]
-for i in range(len(colors)):
-    colors[i]=colors[i].lower()
+listen_server=stupidArtnet.StupidArtnetServer()
+u0_listener=listen_server.register_listener(universe=1)
+
+colors=["#fd5b78", "#50bfe6", "#ffcc33", "#ff9933", "#ee34d2", "#66ff66", "#ff6eff"]
 
 connectedUsers = {} # Skal mappe socketID-er med setenummer, radnummer og felt
 
@@ -24,11 +25,15 @@ def home():
 
 #Route for å implementere statiske filer til hjemskjerm. Dvs. MGP-bilde
 @app.route('/static/<path:path>')
-def getStataticFile(path):
+def getStaticFile(path):
     return send_from_directory("static", path) 
+
+
+
 
 def receiveData(): # Funksjon som skal motta data fra raspberry. Returnerer en farge
     buffer=listen_server.get_buffer(u0_listener)
+    print(buffer)
     if len(buffer)==0:
         # Får ikke signal fra pi => tilfeldig farge
         farge=random.choice(colors)
@@ -44,16 +49,11 @@ def receiveData(): # Funksjon som skal motta data fra raspberry. Returnerer en f
 def handle_message(data):
     emit("update:color", receiveData(), broadcast=True)
 
-@socketio.on("connect") # Funksjon som kalles når en ny bruker kobler seg på websocket
-def add_user(felt):
-    print("A user connected to the websocket-server")
+
+# @socketio.on("connect") # Funksjon som kalles når en ny bruker kobler seg på websocket
+# def add_user(felt):
+#     print("A user connected to the websocket-server")
     # connectedUsers[request.sid] = [] # Fyll opp med radnummer, setenummer, felt
-    
 
 if __name__ == "__main__":
-    listen_server=stupidArtnet.StupidArtnetServer()
-    u0_listener=listen_server.register_listener(universe=1)
-
     socketio.run(app, host="localhost", debug=True, use_reloader=True, port=8000)
-
-    del listen_server
