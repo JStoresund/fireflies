@@ -1,4 +1,4 @@
-from bottle import get, route, run, template
+from bottle import get, route, run, template, static_file
 from gevent import monkey
 from bottle_websocket import GeventWebSocketServer, websocket
 from queue import Queue
@@ -19,12 +19,20 @@ def on_artnet_frame(frame):
     queue.put(frame)
 
 
-listener = server.register_listener(1, callback_function=on_artnet_frame)
+listener = server.register_listener(universe = 0, callback_function=on_artnet_frame)
 
 
-@route('/')
+@route('/farge')
 def index():
     return template('index.html')
+
+@route("/")
+def home():
+    return template("hjem.html")
+
+@route('/static/<path:path>')
+def getStaticFile(path):
+    return static_file(path, "static") 
 
 
 @get('/websocket', apply=[websocket])
@@ -34,4 +42,4 @@ def websocket_route(ws):
         ws.send(channels_to_hexcode(frame[0:3]))
 
 
-run(host='192.168.1.5', port=8080, server=GeventWebSocketServer)
+run(host='localhost', port=8080, server=GeventWebSocketServer)
