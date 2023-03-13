@@ -18,6 +18,8 @@
     
     socket.on('connect', () => {
       console.log('Connected to server');
+      socket.emit("message", felt, radNummer, seteNummer);
+      console.log("Johan er gigachad");
     });
 
     // custom event that listens for colorchange
