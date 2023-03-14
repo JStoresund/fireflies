@@ -19,7 +19,6 @@
     socket.on('connect', () => {
       console.log('Connected to server');
       socket.emit("build:addUser", felt, radNummer, seteNummer);
-      console.log("Johan er gigachad");
     });
 
     // custom event that listens for colorchange
@@ -28,14 +27,15 @@
       body.style.backgroundColor = data;
     });
 
-    socket.on('remove:disconnect', () => {
+    socket.on('disconnect', () => {
       console.log('Disconnected from server');
+      socket.emit("remove:removeUser", felt, radNummer, seteNummer);
     });
 
-    // setInterval(() => {
-    //     let color = document.querySelector('#color').value;
-    //     socket.emit('update:color', color);
-    // }, 500)
+    const randomColor = () => {
+      let colors = ["#fd5b78", "#50bfe6", "#ffcc33", "#ff9933", "#ee34d2", "#66ff66", "#ff6eff"];
+      return colors[Math.floor(Math.random()*colors.length)]
+    }
 
   </script>
 </html>

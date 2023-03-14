@@ -72,8 +72,14 @@ def Wave(waveColor, defaultColor, speed):
 def add_user(felt, radNummer, seteNummer):
     print("A user connected to the websocket-server")
     connectedUsers[ (felt, radNummer, seteNummer) ] = request.sid # Legger bruker inn i dictionary
-    antallSeter=max(antallSeter, seteNummer)
+    global antallSeter
+    antallSeter=max(antallSeter, int(seteNummer))
     print(connectedUsers)
+
+@socketio.on("remove:removeUser")
+def remove_user(felt, radNummer, seteNummer):
+    del connectedUsers[ (felt, radNummer, seteNummer) ]
+    print("User removed") #FUNKER IKKE
 
 if __name__ == "__main__":
     socketio.run(app, host="localhost", debug=True, use_reloader=True, port=8000)
