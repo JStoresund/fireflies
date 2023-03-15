@@ -1,15 +1,25 @@
 body{
-    background-color: white;
+    background-image: url("/static/images/giphy.gif");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    /* background-color: white; */
     text-align: center;
 }
 
+.p1 {
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
+
+
 input {
     padding: 5px;
-    border-radius: 1px;
+    border-radius: 10px;
 }
 
 #ErrorMessage {
-    color: black;
+    color: white;
 }
 
 .button {
@@ -39,6 +49,10 @@ input {
     0% {
       background-color: pink;
       box-shadow: 0 0 3px pink;
+    }
+    25% {
+        background-color: #ae50ab;
+        box-shadow: 0 0 3px #ae50ab;
     }
     50% {
       background-color: #cb2bb3;
