@@ -1,0 +1,54 @@
+body{
+    background-color: white;
+    text-align: center;
+}
+
+input {
+    padding: 5px;
+    border-radius: 1px;
+}
+
+#ErrorMessage {
+    color: black;
+}
+
+.button {
+
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.8);
+    background: rgb(108, 64, 141);
+    font-size: 15px;
+    margin: 2%;
+    padding: 10px 40px;
+    border-radius: 10px;
+    font-weight: normal;
+    text-transform: uppercase;
+    transition: all 0.2s ease-in-out;
+
+    /*
+    background-color: purple;
+    border-color: lightpink;
+    margin: 2%;
+    width: 10%;
+    padding: 5px;
+    border-radius: 25px;
+    */
+    
+}
+@keyframes glowing {
+    0% {
+      background-color: pink;
+      box-shadow: 0 0 3px pink;
+    }
+    50% {
+      background-color: #cb2bb3;
+      box-shadow: 0 0 10px #cb2bb3;
+    }
+    100% {
+      background-color: purple;
+      box-shadow: 0 0 3px purple;
+    }
+  }
+.button {
+  animation: glowing 2000ms infinite;
+}
