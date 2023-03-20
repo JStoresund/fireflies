@@ -24,8 +24,8 @@ artnet_server=stupidArtnet.StupidArtnetServer()
 listener=artnet_server.register_listener(universe=1, callback_function=sendToServer)
 
 connectedUsers = {} # Skal mappe socketID-er med setenummer, radnummer og felt
+amountOfColumns=2
 amountOfRows=10
-amountOfColumns=10
 
 @app.route('/farge')
 def farge():
@@ -44,7 +44,7 @@ def getHexString(data):
     return ("#" + 3 * "{:02x}").format(*data)
 
 def posToIndex(rowNumber, seatNumber):
-    return 3*((amountOfRows - rowNumber) * amountOfRows + seatNumber-1)
+    return 3*((amountOfRows - rowNumber) * amountOfColumns + seatNumber-1)
 
 
 @socketio.on('update:color') # Funksjon som kalles når signal kommer fra klient (se websocket.html)
@@ -68,10 +68,10 @@ def add_user(felt, radNummer, seteNummer):
     seteNummer=int(seteNummer)
     connectedUsers[ request.sid ] = {"felt": felt, "rad": radNummer, "sete": seteNummer} # Legger bruker inn i dictionary
 
-    global amountOfRows
-    global amountOfColumns
-    amountOfRows=max(amountOfRows, radNummer)
-    amountOfColumns=max(amountOfColumns, seteNummer)
+    # global amountOfRows
+    # global amountOfColumns
+    # amountOfRows=max(amountOfRows, radNummer)
+    # amountOfColumns=max(amountOfColumns, seteNummer)
     print(connectedUsers)
 
 # TEST
