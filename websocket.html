@@ -19,6 +19,9 @@
     socket.on('connect', () => {
       console.log('Connected to server');
       socket.emit("build:addUser", felt, radNummer, seteNummer);
+      // TEST
+      socket.emit("conn");
+      // TEST END
     });
 
     // custom event that listens for colorchange
@@ -29,7 +32,6 @@
 
     socket.on('disconnect', () => {
       console.log('Disconnected from server');
-      socket.emit("remove:removeUser", sete, radNummer, seteNummer);
     });
 
 
@@ -38,7 +40,7 @@
       body.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];
     }
 
-    setInterval(setRandomColor, 500);
+    // setInterval(setRandomColor, 500);
 
     
 
