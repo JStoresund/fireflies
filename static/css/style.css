@@ -1,26 +1,68 @@
 body{
-    background-color: purple;
+    background-image: url("/static/images/giphy.gif");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    /* background-color: white; */
     text-align: center;
 }
 
+.p1 {
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
+
+
 input {
     padding: 5px;
-    border-radius: 5%;
+    border-radius: 10px;
 }
 
 #ErrorMessage {
-    color: orange;
+    color: white;
 }
 
-button {
-    background-color: yellow;
-    border-color: orange;
+.button {
+
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.8);
+    background: rgb(108, 64, 141);
+    font-size: 15px;
+    margin: 2%;
+    padding: 10px 40px;
+    border-radius: 10px;
+    font-weight: normal;
+    text-transform: uppercase;
+    transition: all 0.2s ease-in-out;
+
+    /*
+    background-color: purple;
+    border-color: lightpink;
     margin: 2%;
     width: 10%;
     padding: 5px;
     border-radius: 25px;
+    */
+    
 }
-button:active {
-    background-color: rgb(221, 225, 9);
-    width: 9.8%;
+@keyframes glowing {
+    0% {
+      background-color: pink;
+      box-shadow: 0 0 3px pink;
+    }
+    25% {
+        background-color: #ae50ab;
+        box-shadow: 0 0 3px #ae50ab;
+    }
+    50% {
+      background-color: #cb2bb3;
+      box-shadow: 0 0 10px #cb2bb3;
+    }
+    100% {
+      background-color: purple;
+      box-shadow: 0 0 3px purple;
+    }
+  }
+.button {
+  animation: glowing 2000ms infinite;
 }
