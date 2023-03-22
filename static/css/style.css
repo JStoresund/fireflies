@@ -34,6 +34,7 @@ input {
     font-weight: normal;
     text-transform: uppercase;
     transition: all 0.2s ease-in-out;
+    animation: glowing 2000ms infinite;
 
     /*
     background-color: purple;
@@ -63,6 +64,3 @@ input {
       box-shadow: 0 0 3px purple;
     }
   }
-.button {
-  animation: glowing 2000ms infinite;
-}

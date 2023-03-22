@@ -19,9 +19,6 @@
     socket.on('connect', () => {
       console.log('Connected to server');
       socket.emit("build:addUser", felt, radNummer, seteNummer);
-      // TEST
-      socket.emit("conn");
-      // TEST END
     });
 
     // custom event that listens for colorchange

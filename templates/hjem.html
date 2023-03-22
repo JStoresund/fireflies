@@ -8,12 +8,18 @@
             let felt=document.getElementById("felt").value;
             let radNummer=document.getElementById("rad").value;
             let seteNummer=document.getElementById("sete").value;
+
+            let antallRader={{amountOfRows}};
+            let antallSeter={{amountOfSeats}};
             
             if(felt==="" || radNummer==="" || seteNummer==="") {
                 document.getElementById("ErrorMessage").innerText="Vennligst fyll inn alle feltene!";
             }
             else if (isNaN(felt) || isNaN(radNummer) || isNaN(seteNummer)) {
                 document.getElementById("ErrorMessage").innerText="Input må være tall!";
+            }
+            else if (radNummer > antallRader || radNummer < 0 || seteNummer > antallSeter || seteNummer < 0) {
+                document.getElementById("ErrorMessage").innerText="Denne passen finnes ikke";
             }
             else {
                 document.getElementById("ErrorMessage").innerText="";
