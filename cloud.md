@@ -17,7 +17,7 @@ logg inn i dockerhub og lag et nytt public repository. Gi repoet et navn. I denn
 
 > **Docker og dockerhub vedlig kort forklart**:
 >
-> Docker og dockerhub vedlig kort forklart: Docker er måte å lage/kjøre programmer i et isolert miljø. I dette prosjektet ønsker vi å lage en webserver som oppfører seg likt på vår engen datamaskin og i skyen. Docker er perfekt for det, og lar oss definere hvordan koden vår skal kjøre. ref: `Dockerfile`. Docker ser på Dockerfile filen og bygger det imaget vårt ut ifra hva vi har sagt. Når vi har bygget et docker image har vi det bare lokalt på vår egen pc, men siden vi ønsker å kjøre serveren i skyen må vi publisere imaget vårt i et container-registry. Nå bruker vi DockerHub siden det er lett å gjøre images offentlig tilgjengelig (slik at vi slipper å autentisere senere, når vi skal laste det ned igjen). 
+> Docker og dockerhub vedlig kort forklart: Docker er måte å lage/kjøre programmer i et isolert miljø. I dette prosjektet ønsker vi å lage en webserver som oppfører seg likt på vår egen datamaskin og i skyen. Docker er perfekt for det, og lar oss definere hvordan koden vår skal kjøre. ref: `Dockerfile`. Docker ser på Dockerfile filen og bygger det imaget vårt ut ifra hva vi har sagt. Når vi har bygget et docker image har vi det bare lokalt på vår egen pc, men siden vi ønsker å kjøre serveren i skyen må vi publisere imaget vårt i et container-registry. Nå bruker vi DockerHub siden det er lett å gjøre images offentlig tilgjengelig (slik at vi slipper å autentisere senere, når vi skal laste det ned igjen). 
 
 
 Første steg når koden er klar og man ønsker å kjøre den i skyen er å bygge et docker-image. Da bruker man docker kommandoen `docker build`. For å forenkle prossessen senere kan vi bruke vår eget docker hub brukernavn og repo navn. I tillegg må man ha en tag, bruk "latest". Ikke glem punktum på slutten. Punktumet beskriver hvor docker skal bygge et image fra (jeg antar at dere er i prosjektet sit directory).
@@ -91,7 +91,7 @@ http://johaneersus.northeurope.azurecontainer.io:8000/
 http://"dns-name-lable".northeurope.azurecontainer.io:8000/
 
 <br></br>
-🌟 Bra jobba! Nå kan du skrive "Experience with building and deploying docker container with Azure Clound infrastrcuture and Docker Hub" på CV-en.
+🌟 Bra jobba! Nå kan du skrive "Experience with building and deploying docker container with Azure Cloud infrastructure and Docker Hub" på CV-en.
 <br></br>
 
 ## SHIT vi gjorde noe feil i Azure!
@@ -112,6 +112,6 @@ Endret koden? Har du testet den lokalt og ønkser å kjøre den oppdaterte koden
 
 
 ## Ekstra CV materiale
-1. Sett opp automatisk bygging av bildet med Github CI/CD. Automatisk publiser et nytt docker image til dockerhub når noen publiserer kode i "main" branchen. Azure skal bruke en webhook for å redeploye konteineren når et nytt bilde blir publisert i Docker Hub. Hvis dere klarer dette kan dere skrive følgende på CV-en. "Experience with automatic deplyoment using CI/CD"
+1. Sett opp automatisk bygging av bildet med Github CI/CD. Automatisk publiser et nytt docker image til dockerhub når noen publiserer kode i "main" branchen. Azure skal bruke en webhook for å redeploye konteineren når et nytt bilde blir publisert i Docker Hub. Hvis dere klarer dette kan dere skrive følgende på CV-en. "Experience with automatic deplyoment using CI/CD
 
 2. Ikke bruke docker hub registry, heller opprette en egen container registry i Azure.
