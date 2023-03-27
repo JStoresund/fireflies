@@ -30,21 +30,20 @@ def home():
 def getStaticFile(path):
     return send_from_directory("static", path) 
 
-def getHexString(data):
+def getHexString(data): # Convert list of size 3 to rgb-code
     return ("#" + 3 * "{:02x}").format(*data)
 
-def posToIndex(rowNumber, seatNumber): # Finn korrekt index i input-listen ut i fra radnummer og setenummer
+def posToIndex(rowNumber, seatNumber): # Find correct index in unicast-list from rownumber and seatnumber
     return 3*((amountOfRows - rowNumber) * amountOfSeats + seatNumber-1)
 
-@socketio.on('update:color') # Funksjon som kalles når signal kommer fra klient (se websocket.html)
+@socketio.on('update:color') # Function called when new data is received
 def send_data(data):
-    # if prev_data==data:
-    #     return
+    if prev_data==data: return
+
     for user, pos in connectedUsers.items(): # Gå over hver bruker
         try:
-            splice = data[posToIndex(pos["rad"], pos["sete"]) : posToIndex(pos["rad"], pos["sete"])+3]
-            color=getHexString(splice)
-            # print(index)
+            index=posToIndex(pos["rad"], pos["sete"])
+            color=getHexString(data[index: index+3])
             socketio.emit("update:color", color)
             print("Sending successful")
         except IndexError:
@@ -53,16 +52,20 @@ def send_data(data):
             print(f"Sending failed for user {user} at position {pos}")
     prev_data=data
 
-@socketio.on('build:addUser') # Funksjon som kalles når en ny bruker kobler seg på websocket
-def add_user(felt, radNummer, seteNummer):
-    print("A user connected to the websocket-server")
-    felt=int(felt)
-    radNummer=int(radNummer)
-    seteNummer=int(seteNummer)
-    connectedUsers[ request.sid ] = {"felt": felt, "rad": radNummer, "sete": seteNummer} # Legger bruker inn i dictionary
-    print(connectedUsers)
+@socketio.on('build:addUser') # Function called when new user connects to websocket (see websocket.html)
+def add_user(radNummer, seteNummer):
+    try:
+        print("A user connected to the websocket-server")
+        # felt=int(felt)
+        radNummer=int(radNummer)
+        seteNummer=int(seteNummer)
+        connectedUsers[ request.sid ] = {"rad": radNummer, "sete": seteNummer} # Legger bruker inn i dictionary
+        print(connectedUsers)
+    except Exception:
+        pass
+    # Momentary solution
 
-@socketio.on("disconnect")
+@socketio.on("disconnect") # Function called when user disconnects (e.g closes browser)
 def remove_user():
     del connectedUsers[ request.sid ]
     print("User removed")
@@ -81,15 +84,3 @@ if __name__ == "__main__":
 #             else:
 #                 emit("update:color", defaultColor, room=user)
 #         sleep(500/speed)
-
-
-# def receiveData(): # Funksjon som skal motta data fra raspberry. Returnerer en fargeverdi
-#     buffer=artnet_data.get()
-#     # print(buffer)
-#     if len(buffer)==0:
-#         # Får ikke signal fra pi => tilfeldig farge
-#         data=""
-#     else:
-#         # Får signal fra pi => farge fra lysbord (for øyeblikket satt til svart)
-#         data = ("#" + 3 * "{:02x}").format(*buffer)
-#     return data
