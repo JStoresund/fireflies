@@ -36,8 +36,8 @@ def posToIndex(rowNumber, seatNumber): # Find correct index in unicast-list from
 
 @socketio.on('update:color') # Function called when new data is received
 def send_data(unicast):
-    if prev_data==unicast: return
-
+    if prev_data==unicast: 
+        return
     for user, pos in connectedUsers.items(): # Gå over hver bruker
         try:
             index=posToIndex(pos["rad"], pos["sete"])
