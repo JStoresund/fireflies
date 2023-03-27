@@ -2,8 +2,6 @@ from flask import Flask, send_from_directory, send_file, request, render_templat
 from flask_socketio import SocketIO
 from gevent import monkey
 from stupidArtnet import StupidArtnetServer
-# import multiprocessing as mp
-from time import sleep
 
 monkey.patch_all()
 
@@ -30,27 +28,27 @@ def home():
 def getStaticFile(path):
     return send_from_directory("static", path) 
 
-def getHexString(data): # Convert list of size 3 to rgb-code
+def getRGBString(data): # Convert list of size 3 to rgb-code
     return ("#" + 3 * "{:02x}").format(*data)
 
 def posToIndex(rowNumber, seatNumber): # Find correct index in unicast-list from rownumber and seatnumber
     return 3*((amountOfRows - rowNumber) * amountOfSeats + seatNumber-1)
 
 @socketio.on('update:color') # Function called when new data is received
-def send_data(data):
-    if prev_data==data: return
+def send_data(unicast):
+    if prev_data==unicast: return
 
     for user, pos in connectedUsers.items(): # Gå over hver bruker
         try:
             index=posToIndex(pos["rad"], pos["sete"])
-            color=getHexString(data[index: index+3])
+            color=getRGBString(unicast[index: index+3])
             socketio.emit("update:color", color)
             print("Sending successful")
         except IndexError:
             print("IndexError: Seat out of range")
         except Exception:
             print(f"Sending failed for user {user} at position {pos}")
-    prev_data=data
+    prev_data=unicast
 
 @socketio.on('build:addUser') # Function called when new user connects to websocket (see websocket.html)
 def add_user(radNummer, seteNummer):
