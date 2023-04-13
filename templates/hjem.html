@@ -24,9 +24,9 @@
             }
             else {
                 document.getElementById("ErrorMessage").innerText="";
-                localStorage.setItem("felt", felt);
-                localStorage.setItem("radNummer", radNummer);
-                localStorage.setItem("seteNummer", seteNummer);
+                sessionStorage.setItem("felt", felt);
+                sessionStorage.setItem("radNummer", radNummer);
+                sessionStorage.setItem("seteNummer", seteNummer);
                 // console.log(felt, radNummer, seteNummer); FUNKER
                 window.location.href="/farge"; // Redirekt til websocket.html
             }

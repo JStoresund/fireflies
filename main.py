@@ -28,24 +28,28 @@ def home():
 def getStaticFile(path):
     return send_from_directory("static", path) 
 
-def getRGBString(data): # Convert list of size 3 to rgb-code
+def getRGBString(data): # Convert list of size 3 to rgb-string
     return ("#" + 3 * "{:02x}").format(*data)
 
 def posToIndex(rowNumber, seatNumber): # Find correct index in unicast-list from rownumber and seatnumber
-    return 3*((amountOfRows - rowNumber) * amountOfSeats + seatNumber-1)
+    return 3*((amountOfRows - rowNumber) * amountOfSeats + seatNumber - 1)
+
+prev_data=[]
 
 @socketio.on('update:color') # Function called when new data is received
 def send_data(unicast):
-    if prev_data==unicast: 
+    global prev_data
+    if prev_data==unicast:
         return
-    for user, pos in connectedUsers.items(): # Gå over hver bruker
+    for user, pos in connectedUsers.items(): # Iterate over each user
         try:
             index=posToIndex(pos["rad"], pos["sete"])
+            if prev_data[index:index+3]==unicast[index:index+3]:
+                continue
             color=getRGBString(unicast[index: index+3])
             socketio.emit("update:color", color)
-            print("Sending successful")
         except IndexError:
-            print("IndexError: Seat out of range")
+            print(f"IndexError: Seat {pos} doesn't exist")
         except Exception:
             print(f"Sending failed for user {user} at position {pos}")
     prev_data=unicast
@@ -54,14 +58,12 @@ def send_data(unicast):
 def add_user(radNummer, seteNummer):
     try:
         print("A user connected to the websocket-server")
-        # felt=int(felt)
         radNummer=int(radNummer)
         seteNummer=int(seteNummer)
-        connectedUsers[ request.sid ] = {"rad": radNummer, "sete": seteNummer} # Legger bruker inn i dictionary
+        connectedUsers[ request.sid ] = {"rad": radNummer, "sete": seteNummer} # User added to doctionary
         print(connectedUsers)
     except Exception:
         pass
-    # Momentary solution
 
 @socketio.on("disconnect") # Function called when user disconnects (e.g closes browser)
 def remove_user():
@@ -71,14 +73,5 @@ def remove_user():
 artnet_server=StupidArtnetServer()
 listener=artnet_server.register_listener(universe=0, callback_function=send_data)
 
-if __name__ == "__main__":    
+if __name__ == "__main__":
     socketio.run(app, host="localhost", debug=True, use_reloader=True, port=8000)
-
-# def Wave(waveColor, defaultColor, speed):
-#     for column in range(1, antallSeter+1):
-#         for user, position in connectedUsers:
-#             if position[2]==column:
-#                 emit("update:color", waveColor, room=user)
-#             else:
-#                 emit("update:color", defaultColor, room=user)
-#         sleep(500/speed)

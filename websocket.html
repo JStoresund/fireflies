@@ -12,9 +12,9 @@
 
     const socket = io();
 
-    var felt=localStorage.getItem("felt");
-    var radNummer=localStorage.getItem("radNummer");
-    var seteNummer=localStorage.getItem("seteNummer");
+    var felt=sessionStorage.getItem("felt");
+    var radNummer=sessionStorage.getItem("radNummer");
+    var seteNummer=sessionStorage.getItem("seteNummer");
     
     socket.on('connect', () => {
       console.log('Connected to server');
