@@ -6,7 +6,6 @@
 
     <script>
         const buttonClicked=() => {
-            let felt=document.getElementById("felt").value;
             let radNummer=document.getElementById("rad").value;
             let seteNummer=document.getElementById("sete").value;
 
@@ -16,7 +15,7 @@
             if(felt==="" || radNummer==="" || seteNummer==="") {
                 document.getElementById("ErrorMessage").innerText="Vennligst fyll inn alle feltene!";
             }
-            else if (isNaN(felt) || isNaN(radNummer) || isNaN(seteNummer)) {
+            else if (isNaN(radNummer) || isNaN(seteNummer)) {
                 document.getElementById("ErrorMessage").innerText="Input må være tall!";
             }
             else if (radNummer > antallRader || radNummer < 0 || seteNummer > antallSeter || seteNummer < 0) {
@@ -24,7 +23,6 @@
             }
             else {
                 document.getElementById("ErrorMessage").innerText="";
-                sessionStorage.setItem("felt", felt);
                 sessionStorage.setItem("radNummer", radNummer);
                 sessionStorage.setItem("seteNummer", seteNummer);
                 // console.log(felt, radNummer, seteNummer); FUNKER
@@ -37,10 +35,8 @@
         <font size = "5">
         <h1 class="p1">Hei og velkommen til MGP sitt digitale lysshow!</h1>
         
-        <p class="p1">Vennligst skriv inn felt, rad og sete. Det står på setet ditt.</p>
+        <p class="p1">Vennligst skriv inn rad og sete. Det står på setet ditt.</p>
 
-        <h5 class="p1"> Felt: </h5>
-        <input id="felt"> 
         <h5 class="p1"> Rad: </h5>
         <input id="rad">
         <h5 class="p1"> Sete: </h5>
