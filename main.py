@@ -4,7 +4,7 @@ from gevent import monkey
 from gevent.pywsgi import WSGIServer
 from stupidArtnet import StupidArtnetServer
 from geventwebsocket.handler import WebSocketHandler
-
+from time import sleep
 
 monkey.patch_all()
 
@@ -13,7 +13,7 @@ socketio = SocketIO(app)
 
 prev_data = []
 connectedUsers = {}  # Skal mappe socketID-er med setenummer, radnummer og felt
-amountOfSeats = 2
+amountOfSeats = 10
 amountOfRows = 10
 
 @app.route('/farge')
@@ -35,25 +35,45 @@ def getRGBString(data):  # Convert list of size 3 to rgb-string
 def posToIndex(rowNumber, seatNumber):  # Find correct index in unicast-list from rownumber and seatnumber
     return 3*((amountOfRows - rowNumber) * amountOfSeats + seatNumber - 1)
 
-prev_data = []
+# MODES
 
-@socketio.on('update:color')  # Function called when new data is received
-def send_data(unicast):
-    global prev_data
-    if prev_data == unicast:
-        return
-    for user, pos in connectedUsers.items():  # Iterate over each user
+waiting_time=0.1
+
+# def wave(color1, color2):
+#     color=""
+#     for i in range(amountOfSeats):
+#         for id, pos in connectedUsers.items():
+#             if pos["sete"]==i:
+#                 color=color1
+#             else:
+#                 color=color2
+#             socketio.emit("update:color", color, room=id)
+#         sleep(waiting_time)
+
+def default(data):
+    for id, pos in connectedUsers.items():  # Iterate over each user
         try:
             index = posToIndex(pos["rad"], pos["sete"])
-            if prev_data[index:index+3] == unicast[index:index+3]:
-                continue
-            color = getRGBString(unicast[index: index+3])
-            socketio.emit("update:color", color)
+            # if prev_data[index:index+3] == data[index:index+3]:
+            #     continue
+            color = getRGBString(data[index: index+3])
+            socketio.emit("update:color", color, room=id)
         except IndexError:
             print(f"IndexError: Seat {pos} doesn't exist")
         except Exception:
-            print(f"Sending failed for user {user} at position {pos}")
-    prev_data = unicast
+            print(f"Sending failed for user {id} at position {pos}")
+
+prev_data = []
+
+@socketio.on('update:color')  # Function called when new data is received
+def send_data(data):
+    global prev_data
+    if len(connectedUsers)==0:
+        return
+    # if 0<data[-1]:
+    #     wave(getRGBString(data[:3]), getRGBString(data[3:6]))
+    default(data)
+    prev_data = data
 
 @socketio.on('build:addUser')  # Function called when new user connects to websocket (see websocket.html)
 def add_user(radNummer, seteNummer):
@@ -63,6 +83,7 @@ def add_user(radNummer, seteNummer):
         seteNummer = int(seteNummer)
         connectedUsers[request.sid] = {"rad": radNummer, "sete": seteNummer}  # User added to doctionary
         print(connectedUsers)
+        print(f"Amount of people connected: {len(connectedUsers)}")
     except Exception:
         print("Failed to add user")
 
