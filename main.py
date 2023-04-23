@@ -74,4 +74,4 @@ artnet_server=StupidArtnetServer()
 listener=artnet_server.register_listener(universe=0, callback_function=send_data)
 
 if __name__ == "__main__":
-    socketio.run(app, host="localhost", debug=True, use_reloader=True, port=8000)
+    socketio.run(app, host="0.0.0.0", debug=True, use_reloader=True, port=8000)
