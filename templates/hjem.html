@@ -12,7 +12,7 @@
             let antallRader={{amountOfRows}};
             let antallSeter={{amountOfSeats}};
             
-            if(felt==="" || radNummer==="" || seteNummer==="") {
+            if(radNummer==="" || seteNummer==="") {
                 document.getElementById("ErrorMessage").innerText="Vennligst fyll inn alle feltene!";
             }
             else if (isNaN(radNummer) || isNaN(seteNummer)) {
@@ -26,14 +26,14 @@
                 sessionStorage.setItem("radNummer", radNummer);
                 sessionStorage.setItem("seteNummer", seteNummer);
                 // console.log(felt, radNummer, seteNummer); FUNKER
-                window.location.href="/farge"; // Redirekt til websocket.html
+                window.location.href="/farge"; // Redirekt til websocket.html   
             }
         }
     </script>
 
     <body>
         <font size = "5">
-        <h1 class="p1">Hei og velkommen til MGP sitt digitale lysshow!</h1>
+        <h1 class="p1">Velkommen til MGP sitt digitale lysshow!</h1>
         
         <p class="p1">Vennligst skriv inn rad og sete. Det står på setet ditt.</p>
 
