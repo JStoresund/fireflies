@@ -4,7 +4,6 @@ from gevent import monkey
 from gevent.pywsgi import WSGIServer
 from stupidArtnet import StupidArtnetServer
 from geventwebsocket.handler import WebSocketHandler
-from time import sleep
 
 monkey.patch_all()
 
@@ -35,34 +34,6 @@ def getRGBString(data):  # Convert list of size 3 to rgb-string
 def posToIndex(rowNumber, seatNumber):  # Find correct index in unicast-list from rownumber and seatnumber
     return 3*((amountOfRows - rowNumber) * amountOfSeats + seatNumber - 1)
 
-# MODES
-
-waiting_time=0.1
-
-# def wave(color1, color2):
-#     color=""
-#     for i in range(amountOfSeats):
-#         for id, pos in connectedUsers.items():
-#             if pos["sete"]==i:
-#                 color=color1
-#             else:
-#                 color=color2
-#             socketio.emit("update:color", color, room=id)
-#         sleep(waiting_time)
-
-def default(data):
-    for id, pos in connectedUsers.items():  # Iterate over each user
-        try:
-            index = posToIndex(pos["rad"], pos["sete"])
-            # if prev_data[index:index+3] == data[index:index+3]:
-            #     continue
-            color = getRGBString(data[index: index+3])
-            socketio.emit("update:color", color, room=id)
-        except IndexError:
-            print(f"IndexError: Seat {pos} doesn't exist")
-        except Exception:
-            print(f"Sending failed for user {id} at position {pos}")
-
 prev_data = []
 
 @socketio.on('update:color')  # Function called when new data is received
@@ -70,9 +41,17 @@ def send_data(data):
     global prev_data
     if len(connectedUsers)==0:
         return
-    # if 0<data[-1]:
-    #     wave(getRGBString(data[:3]), getRGBString(data[3:6]))
-    default(data)
+    for id, pos in connectedUsers.items():  # Iterate over each user
+        try:
+            index = posToIndex(pos["rad"], pos["sete"])
+            if prev_data[index:index+3] == data[index:index+3]:
+                continue
+            color = getRGBString(data[index: index+3])
+            socketio.emit("update:color", color, room=id)
+        except IndexError:
+            print(f"IndexError: Seat {pos} doesn't exist")
+        except Exception:
+            print(f"Sending failed for user {id} at position {pos}")
     prev_data = data
 
 @socketio.on('build:addUser')  # Function called when new user connects to websocket (see websocket.html)
@@ -89,7 +68,7 @@ def add_user(radNummer, seteNummer):
 
 @socketio.on("disconnect")  # Function called when user disconnects (e.g closes browser)
 def remove_user():
-    # del connectedUsers[request.sid]
+    del connectedUsers[request.sid]
     print("User removed")
 
 artnet_server = StupidArtnetServer()
