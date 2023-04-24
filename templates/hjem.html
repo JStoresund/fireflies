@@ -5,7 +5,7 @@
     </head>
 
     <script>
-        const buttonClicked=() => {
+        const buttonClicked = () => {
             let radNummer=document.getElementById("rad").value;
             let seteNummer=document.getElementById("sete").value;
 
@@ -25,8 +25,7 @@
                 document.getElementById("ErrorMessage").innerText="";
                 sessionStorage.setItem("radNummer", radNummer);
                 sessionStorage.setItem("seteNummer", seteNummer);
-                // console.log(felt, radNummer, seteNummer); FUNKER
-                window.location.href="/farge"; // Redirekt til websocket.html   
+                window.location.href="/farge"; // Redirect to websocket.html   
             }
         }
     </script>
@@ -46,7 +45,5 @@
         <button onclick="buttonClicked()" href="" class="button">Send!</button>
         <div id="ErrorMessage"></div>
         <br>
-
-        <!-- <img src="static/images/MGPlogo.jpg" /> -->
     </body>
 </html>
