@@ -42,10 +42,10 @@ def send_data(data):
     if len(connectedUsers)==0:
         return
     for id, pos in connectedUsers.items():  # Iterate over each user
+        index = posToIndex(pos["rad"], pos["sete"])
+        if prev_data[index:index+3] == data[index:index+3]:
+            continue
         try:
-            index = posToIndex(pos["rad"], pos["sete"])
-            if prev_data[index:index+3] == data[index:index+3]:
-                continue
             color = getRGBString(data[index: index+3])
             socketio.emit("update:color", color, room=id)
         except IndexError:
@@ -69,7 +69,8 @@ def add_user(radNummer, seteNummer):
 @socketio.on("disconnect")  # Function called when user disconnects (e.g closes browser)
 def remove_user():
     del connectedUsers[request.sid]
-    print("User removed")
+    print("User disconnected")
+    print(f"Amount of poeple connected: {len(connectedUsers)}")
 
 artnet_server = StupidArtnetServer()
 listener = artnet_server.register_listener(universe=0, callback_function=send_data)
