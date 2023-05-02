@@ -19,7 +19,7 @@
                 document.getElementById("ErrorMessage").innerText="Input må være tall!";
             }
             else if (radNummer > antallRader || radNummer < 0 || seteNummer > antallSeter || seteNummer < 0) {
-                document.getElementById("ErrorMessage").innerText="Denne passen finnes ikke";
+                document.getElementById("ErrorMessage").innerText="Denne plassen finnes ikke";
             }
             else {
                 document.getElementById("ErrorMessage").innerText="";
@@ -32,14 +32,14 @@
 
     <body>
         <font size = "5">
-        <h1 class="p1">Velkommen til MGP sitt digitale lysshow!</h1>
+        <h2 class="p1">Velkommen til MGP sitt digitale lysshow!</h2>
         
         <p class="p1">Vennligst skriv inn rad og sete. Det står på setet ditt.</p>
 
         <h5 class="p1"> Rad: </h5>
-        <input id="rad">
+        <input id="rad" type="number" pattern="[0-9]*" inputmode="numeric">
         <h5 class="p1"> Sete: </h5>
-        <input id="sete">
+        <input id="sete" type="number" pattern="[0-9]*" inputmode="numeric">
         <br>
 
         <button onclick="buttonClicked()" href="" class="button">Send!</button>

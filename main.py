@@ -23,7 +23,6 @@ def farge():
 def home():
     return render_template("hjem.html", amountOfRows=amountOfRows, amountOfSeats=amountOfSeats)
 
-#Route for å implementere statiske filer til hjemskjerm. Dvs. MGP-bilde
 @app.route('/static/<path:path>')
 def getStaticFile(path):
     return send_from_directory("static", path) 
@@ -31,7 +30,7 @@ def getStaticFile(path):
 def getRGBString(data):  # Convert list of size 3 to rgb-string
     return ("#" + 3 * "{:02x}").format(*data)
 
-def posToIndex(rowNumber, seatNumber):  # Find correct index in unicast-list from rownumber and seatnumber
+def posToIndex(rowNumber, seatNumber):  # Find correct index in artnet-list from rownumber and seatnumber
     return 3*((amountOfRows - rowNumber) * amountOfSeats + seatNumber - 1)
 
 prev_data = []
@@ -42,10 +41,10 @@ def send_data(data):
     if len(connectedUsers)==0:
         return
     for id, pos in connectedUsers.items():  # Iterate over each user
+        index = posToIndex(pos["rad"], pos["sete"])
+        if prev_data[index:index+3] == data[index:index+3]:
+            continue
         try:
-            index = posToIndex(pos["rad"], pos["sete"])
-            if prev_data[index:index+3] == data[index:index+3]:
-                continue
             color = getRGBString(data[index: index+3])
             socketio.emit("update:color", color, room=id)
         except IndexError:
@@ -69,7 +68,8 @@ def add_user(radNummer, seteNummer):
 @socketio.on("disconnect")  # Function called when user disconnects (e.g closes browser)
 def remove_user():
     del connectedUsers[request.sid]
-    print("User removed")
+    print("User disconnected")
+    print(f"Amount of people connected: {len(connectedUsers)}")
 
 artnet_server = StupidArtnetServer()
 listener = artnet_server.register_listener(universe=0, callback_function=send_data)
