@@ -23,7 +23,6 @@ def farge():
 def home():
     return render_template("hjem.html", amountOfRows=amountOfRows, amountOfSeats=amountOfSeats)
 
-#Route for å implementere statiske filer til hjemskjerm. Dvs. MGP-bilde
 @app.route('/static/<path:path>')
 def getStaticFile(path):
     return send_from_directory("static", path) 
@@ -31,7 +30,7 @@ def getStaticFile(path):
 def getRGBString(data):  # Convert list of size 3 to rgb-string
     return ("#" + 3 * "{:02x}").format(*data)
 
-def posToIndex(rowNumber, seatNumber):  # Find correct index in unicast-list from rownumber and seatnumber
+def posToIndex(rowNumber, seatNumber):  # Find correct index in artnet-list from rownumber and seatnumber
     return 3*((amountOfRows - rowNumber) * amountOfSeats + seatNumber - 1)
 
 prev_data = []
@@ -70,7 +69,7 @@ def add_user(radNummer, seteNummer):
 def remove_user():
     del connectedUsers[request.sid]
     print("User disconnected")
-    print(f"Amount of poeple connected: {len(connectedUsers)}")
+    print(f"Amount of people connected: {len(connectedUsers)}")
 
 artnet_server = StupidArtnetServer()
 listener = artnet_server.register_listener(universe=0, callback_function=send_data)
