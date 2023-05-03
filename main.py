@@ -12,8 +12,8 @@ socketio = SocketIO(app)
 
 prev_data = []
 connectedUsers = {}  # Skal mappe socketID-er med setenummer, radnummer og felt
-amountOfSeats = 10
-amountOfRows = 10
+amountOfSeats = 14
+amountOfRows = 12
 
 @app.route('/farge')
 def farge():
